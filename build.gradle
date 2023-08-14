@@ -1,0 +1,61 @@
+plugins {
+	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'maven-publish'
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = "configuration-${project.mod_loader}-${project.mc_version}"
+version = project.configuration_version
+group = 'dev.toma.configuration'
+
+repositories {
+	maven { url "https://maven.parchmentmc.org" } // parchment
+	maven { url "https://maven.terraformersmc.com/releases" } // modmenu
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.mc_version}"
+	modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api}"
+	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
+
+	mappings loom.layered {
+		officialMojangMappings()
+		parchment("org.parchmentmc.data:parchment-1.19.3:${project.parchment_version}@zip")
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	withSourcesJar()
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+	}
+}
