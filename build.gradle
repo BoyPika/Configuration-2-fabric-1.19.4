@@ -12,14 +12,12 @@ group = 'dev.toma.configuration'
 
 repositories {
 	maven { url "https://maven.parchmentmc.org" } // parchment
-	maven { url "https://maven.terraformersmc.com/releases" } // modmenu
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.mc_version}"
 	modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api}"
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 
 	mappings loom.layered {
 		officialMojangMappings()
